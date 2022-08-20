@@ -1,14 +1,16 @@
 <?php
 
-$host = "localhost";
+$hostname = "localhost";
 $dbname = "login_db";
 $username = "root";
 $password = "";
 
-$mysqli = new $mysqli($host, $username, $password, $dbname);
+$mysqli = mysqli_connect($hostname, $username, $password, $dbname);
 
-if ($mysqli->connect_errno) {
+if ($mysqli->connect_errno || !$mysqli) {
     die("Connection error: " . $mysqli->connect_error);
 }
 
 return $mysqli;
+
+?>

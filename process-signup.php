@@ -1,4 +1,6 @@
 <?php
+session_start();
+require 'database.php';
 
 if (empty($_POST["name"])) {
     die("Name is required");
@@ -26,8 +28,29 @@ if ($_POST["password"] !== $_POST["password_confirmation"]) {
 
 $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-require __DIR__ . "/database.php";
+$mysqli = require __DIR__ . "/database.php";
 
-print_r($_POST);
+$sql = "INSERT INTO user (name, email, password_hash) 
+        VALUE (?, ?, ?)";
+$stmt = $mysqli->stmt_init();
 
-var_dump($password_hash);
+if (! $stmt->prepare($sql)) {
+    die("SQL error: " . $mysqli->error);
+}
+
+$stmt->bind_param("sss", 
+                    $_POST["name"], 
+                    $_POST["email"], 
+                    $password_hash);
+
+if ($stmt->execute()) {
+    header("Location: signup-success.html");
+    exit;
+} else {
+    if ($mysqli->errno === 1062) {
+        die("email already taken");
+    } else {
+        die($mysqli->error . " " . $mysqli->errno);
+    }
+}
+
