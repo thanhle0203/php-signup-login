@@ -15,15 +15,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($user) {
         if (password_verify($_POST["password"], $user["password_hash"])) {
-            die("Login successful");
-        }
+            session_start();
+
+            $_SESSION["user_id"] = $user["id"];
+
+            header("Location: index.php");
+            exit;
     }
 
     $is_invalid = true;
 }
 
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <body>
         
         <h1>Login</h1>
+
 
         <?php if ($is_invalid): ?>
                 <em>Invalid login</em>
