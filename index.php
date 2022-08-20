@@ -15,6 +15,8 @@ session_start();
 
         <?php if (isset($_SESSION["user_id"])): ?>
             <p>You are logged in. </p>
+
+            <p><a href="logout.php">Log out</a></p>
         <?php else: ?>
             <p><a href="login.php">Log in</a> or <a href="signup.html">Sign up</a></p>
         <?php endif; ?>
