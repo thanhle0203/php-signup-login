@@ -1,4 +1,7 @@
 <?php
+
+$is_invalid = false;
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $mysqli = require __DIR__ . "/database.php";
 
@@ -15,6 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             die("Login successful");
         }
     }
+
+    $is_invalid = true;
 }
 
 ?>
@@ -29,6 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <body>
         
         <h1>Login</h1>
+
+        <?php if ($is_invalid): ?>
+                <em>Invalid login</em>
+        <?php endif; ?>
 
         <form method="post">
             <label for="email">Email</label>
